@@ -1,0 +1,82 @@
+<!DOCTYPE=html>
+
+<html>
+<head>
+<link rel='stylesheet' href='wiki.css'>
+    
+</head>
+<body>
+ <div id='search'>   
+ <input placeholder='Search' type="text" id='wiki'>   
+ <button id='btn1'>Search</button>
+ </div>
+ <div id='content'></div>   
+                
+</body>
+
+<!--------------jquery------------------------------------------------------------>
+<script type = 'text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js">//jquery
+</script>
+<script type = 'text/javascript' src='http://code.jquery.com/ui/1.11.4/jquery-ui.js'></script>
+    
+    
+<!--------Jquery-->
+<script>
+var a_tags= ['johnny walker','test','apple','ball','google','python','ruby','basic',
+            'a','adam','alice','announce','april','appeal','attack','announce','aside'
+            
+            ]    
+
+//autocomplete
+
+var val=$('input').val();
+$('input').autocomplete({
+    source: function(request,response){
+    $.ajax({
+    url:'https://en.wikipedia.org/w/api.php?action=opensearch&search='+val+'&format=json&callback=?',
+    dataType:'json',
+    data:{q:request.term},
+    success:function(data){
+        response(data);
+    
+}
+    
+});
+
+        
+        
+    
+//Send Ajax request for the input and create an HTML object.     
+$('#btn1').on('click',function(key){
+    $('#content').empty();
+   var x= $('input').val();
+var url='https://en.wikipedia.org/w/api.php?action=opensearch&search='+x+'&format=json&callback=?';
+
+   console.log(x);
+    $.ajax({
+        url:url,
+        type:'GET',
+        dataType:'json',
+        success:function(data){
+            for (var i =1; i<data[1].length;i++){
+              console.log('url '+ data[3][i]);
+              $('#content').append( '<div class="articles"><a href="'+data[3][i]+'"target="blank">'+data[2][i]+'</a></div>');
+                
+            };//loop
+            
+        } //success function
+        
+    });//end ajax
+     
+    });//end click function     
+    
+$('input').keypress(function(e){
+    if (e.which==13){
+    $('#btn1').click();    
+    };//end if 
+    
+});//end keypress event
+        
+</script>       
+    
+</html>
