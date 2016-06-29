@@ -29,11 +29,10 @@ var a_tags= ['johnny walker','test','apple','ball','google','python','ruby','bas
 
 //autocomplete
 
-var val=$('input').val();
 $('input').autocomplete({
     source: function(request,response){
     $.ajax({
-    url:'https://en.wikipedia.org/w/api.php?action=opensearch&search='+val+'&format=json&callback=?',
+    url:// ???
     dataType:'json',
     data:{q:request.term},
     success:function(data){
