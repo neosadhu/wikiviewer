@@ -6,6 +6,7 @@
     
 </head>
 <body>
+<div id='test'></div>
  <div id='search'>   
  <input placeholder='Search' type="text" id='wiki'>   
  <button id='btn1'>Search</button>
@@ -22,27 +23,34 @@
     
 <!--------Jquery-->
 <script>
-var a_tags= ['johnny walker','test','apple','ball','google','python','ruby','basic',
-            'a','adam','alice','announce','april','appeal','attack','announce','aside'
-            
-            ]    
 
 //autocomplete
+$("input").autocomplete({
+    source: function(request, response) {
+        $.ajax({
+            url: "http://en.wikipedia.org/w/api.php",
+            dataType: "jsonp",
+            data: {
+                'action': "opensearch",
+                'format': "json",
+                'search': request.term
+            },
+            success: function(data) {
+                response(data[1]);
 
-$('input').autocomplete({
-    source: function(request,response){
-    $.ajax({
-    url:// ???
-    dataType:'json',
-    data:{q:request.term},
-    success:function(data){
-        response(data);
-    
-}
-    
-});
+                        
+                    }//success function
+                    
+                });//ajax
 
-        
+                
+        },//source
+    select:function(event,ui){
+        $('#btn1').click();
+        }
+        })//autocomplete
+    
+
         
     
 //Send Ajax request for the input and create an HTML object.     
@@ -57,9 +65,10 @@ var url='https://en.wikipedia.org/w/api.php?action=opensearch&search='+x+'&forma
         type:'GET',
         dataType:'json',
         success:function(data){
-            for (var i =1; i<data[1].length;i++){
-              console.log('url '+ data[3][i]);
+            console.log(data);
+            for (var i =0; i<data[1].length;i++){
               $('#content').append( '<div class="articles"><a href="'+data[3][i]+'"target="blank">'+data[2][i]+'</a></div>');
+      
                 
             };//loop
             
@@ -71,7 +80,9 @@ var url='https://en.wikipedia.org/w/api.php?action=opensearch&search='+x+'&forma
     
 $('input').keypress(function(e){
     if (e.which==13){
-    $('#btn1').click();    
+    $('#btn1').click();
+   
+    
     };//end if 
     
 });//end keypress event
